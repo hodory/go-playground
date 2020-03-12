@@ -14,7 +14,7 @@ func lenAndUpper(name string) (int, string) {
 }
 
 func main() {
-	totalLength, upperName := lenAndUpper("hodory")
-	fmt.Println(totalLength, upperName)
+	totalLength, _ := lenAndUpper("hodory")
+	fmt.Println(totalLength)
 	fmt.Println(multiply(2, 2))
 }
