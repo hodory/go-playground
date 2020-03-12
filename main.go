@@ -2,9 +2,10 @@ package main
 
 import "fmt"
 
+func multiply(a, b int) int {
+	return a * b
+}
+
 func main() {
-	const name string = "hodory"
-	var age int = 3
-	female := false
-	fmt.Print("Hello World")
+	fmt.Println(multiply(2, 2))
 }
