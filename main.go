@@ -10,6 +10,8 @@ func multiply(a, b int) int {
 }
 
 func lenAndUpper(name string) (length int, uppercase string) {
+	defer fmt.Println("Execute After Return")
+
 	length = len(name)
 	uppercase = strings.ToUpper(name)
 
