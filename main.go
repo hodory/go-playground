@@ -22,11 +22,12 @@ func repeatMe(words ...string) {
 	fmt.Println(words)
 }
 
-func print(numbers ...int) int {
-	for i := 0; i < len(numbers); i++ {
-		fmt.Println(i, numbers[i])
+func add(numbers ...int) int {
+	totalNumber := 0
+	for _, number := range numbers {
+		totalNumber += number
 	}
-	return 1
+	return totalNumber
 }
 
 func main() {
@@ -36,5 +37,5 @@ func main() {
 
 	repeatMe("react", "vue", "angular", "svelte", "backbone")
 
-	print(1, 2, 3, 4, 5, 6)
+	fmt.Println(add(10, 20, 30, 40, 50, 60))
 }
