@@ -22,10 +22,19 @@ func repeatMe(words ...string) {
 	fmt.Println(words)
 }
 
+func print(numbers ...int) int {
+	for index, number := range numbers {
+		fmt.Println(index, number)
+	}
+	return 1
+}
+
 func main() {
 	totalLength, upper := lenAndUpper("hodory")
 	fmt.Println(totalLength, upper)
 	fmt.Println(multiply(2, 2))
 
 	repeatMe("react", "vue", "angular", "svelte", "backbone")
+
+	print(1, 2, 3, 4, 5, 6)
 }
