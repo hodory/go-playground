@@ -23,8 +23,8 @@ func repeatMe(words ...string) {
 }
 
 func print(numbers ...int) int {
-	for index, number := range numbers {
-		fmt.Println(index, number)
+	for i := 0; i < len(numbers); i++ {
+		fmt.Println(i, numbers[i])
 	}
 	return 1
 }
