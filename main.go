@@ -2,16 +2,15 @@ package main
 
 import "fmt"
 
-func canIDrink(age int) bool {
-	switch koreanAge := age + 2; koreanAge {
-	case 10:
-		return false
-	case 18:
-		return true
-	}
-	return false
-}
-
 func main() {
-	fmt.Println(canIDrink(16))
+	a := 10
+	b := a
+	c := &a
+	fmt.Println(a, b, c, *c)
+
+	a = 20
+	fmt.Println(a, b, c, *c)
+
+	*c = 100
+	fmt.Println(a, b, c, *c)
 }
