@@ -11,10 +11,7 @@ type person struct {
 func main() {
 	favFood := []string{"kimchi", "ramen"}
 
-	john := person{"john", 20, favFood}
+	john := person{name: "john", age: 20, favFood: favFood}
 
 	fmt.Println(john)
-	// for key, value := range john {
-	// 	fmt.Println(key, value)
-	// }
 }
