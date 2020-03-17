@@ -3,8 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	names := [5]string{"john", "jay", "mac", "cindy"}
-	names[4] = "david"
+	names := []string{"john", "jay", "mac", "cindy"}
+	names = append(names, "tommy")
 
 	fmt.Println(names)
 }
