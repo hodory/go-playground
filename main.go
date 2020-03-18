@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"std/github.com/hodory/go-playground/banking"
+	"github.com/hodory/go-playground/accounts"
 )
 
 func main() {
-	account := banking.Account{Owner: "hodory", Balance: 1000}
+	account := accounts.NewAccount("hodory")
 
 	fmt.Println(account)
 }
