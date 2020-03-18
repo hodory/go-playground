@@ -1,17 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
 
-type person struct {
-	name    string
-	age     int
-	favFood []string
-}
+	"std/github.com/hodory/go-playground/banking"
+)
 
 func main() {
-	favFood := []string{"kimchi", "ramen"}
+	account := banking.Account{Owner: "hodory", Balance: 1000}
 
-	john := person{name: "john", age: 20, favFood: favFood}
-
-	fmt.Println(john)
+	fmt.Println(account)
 }
