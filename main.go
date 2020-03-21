@@ -17,4 +17,12 @@ func main() {
 	}
 	word, _ := dictionary.Search(baseWord)
 	fmt.Println(word)
+
+	dictionary.Delete(baseWord)
+	findWord, searchError := dictionary.Search(baseWord)
+	if searchError != nil {
+		fmt.Println(searchError)
+	} else {
+		fmt.Println(findWord)
+	}
 }
