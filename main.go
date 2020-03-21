@@ -1,13 +1,9 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/hodory/go-playground/accounts"
+	"github.com/hodory/go-playground/mydict"
 )
 
 func main() {
-	account := accounts.NewAccount("hodory")
-	account.Deposit(100)
-	fmt.Println(account)
+	dictionary := mydict.Dictionary{}
 }
