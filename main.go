@@ -1,28 +1,32 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-
-	"github.com/hodory/go-playground/mydict"
+	"net/http"
 )
 
+var errRequestFailed = errors.New("Request Failed")
+
 func main() {
-	dictionary := mydict.Dictionary{}
-	baseWord := "hello"
-	dictionary.Add(baseWord, "First")
-	err := dictionary.Update(baseWord, "Second")
-
-	if err != nil {
-		fmt.Println(err)
+	urls := []string{
+		"https://www.airbnb.com",
+		"https://www.google.co.kr",
+		"https://www.naver.com",
 	}
-	word, _ := dictionary.Search(baseWord)
-	fmt.Println(word)
 
-	dictionary.Delete(baseWord)
-	findWord, searchError := dictionary.Search(baseWord)
-	if searchError != nil {
-		fmt.Println(searchError)
-	} else {
-		fmt.Println(findWord)
+	for _, url := range urls {
+		hitUrl(url)
 	}
+}
+
+func hitUrl(url string) error {
+	fmt.Println("Checking Url : ", url)
+	res, err := http.Get(url)
+
+	if err != nil || res.StatusCode >= 40 {
+		return errRequestFailed
+	}
+
+	return nil
 }
