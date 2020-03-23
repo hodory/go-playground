@@ -6,13 +6,18 @@ import (
 )
 
 func main() {
-	go printText("Hello")
-	printText("World")
+	c := make(chan bool)
+	people := [3]string{"foo", "bar", "baz"}
+
+	for _, person := range people {
+		go isNice(person, c)
+	}
+
+	result := <-c
+	fmt.Println(result)
 }
 
-func printText(text string) {
-	for i := 0; i < 10; i++ {
-		fmt.Println(text)
-		time.Sleep(time.Second)
-	}
+func isNice(name string, c chan bool) {
+	time.Sleep(time.Second * 5)
+	c <- true
 }
