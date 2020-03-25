@@ -7,14 +7,15 @@ import (
 
 func main() {
 	c := make(chan bool)
-	people := [3]string{"foo", "bar", "baz"}
+	people := [5]string{"foo", "bar", "baz", "buz", "joo"}
 
 	for _, person := range people {
 		go isNice(person, c)
 	}
 
-	result := <-c
-	fmt.Println(result)
+	for i := 0; i < len(people); i++ {
+		fmt.Println(<-c)
+	}
 }
 
 func isNice(name string, c chan bool) {
