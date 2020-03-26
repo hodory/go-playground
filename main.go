@@ -2,23 +2,43 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"net/http"
 )
 
-func main() {
-	c := make(chan bool)
-	people := [5]string{"foo", "bar", "baz", "buz", "joo"}
+type requestResult struct {
+	url    string
+	status string
+}
 
-	for _, person := range people {
-		go isNice(person, c)
+func main() {
+	results := map[string]string{}
+	c := make(chan requestResult)
+	urls := []string{
+		"https://www.airbnb.com",
+		"https://www.google.co.kr",
+		"https://www.naver.com",
 	}
 
-	for i := 0; i < len(people); i++ {
-		fmt.Println(<-c)
+	for _, url := range urls {
+		go hitUrl(url, c)
+	}
+
+	for i := 0; i < len(urls); i++ {
+		result := <-c
+		results[result.url] = result.status
+	}
+
+	for url, status := range results {
+		fmt.Println(url, status)
 	}
 }
 
-func isNice(name string, c chan bool) {
-	time.Sleep(time.Second * 5)
-	c <- true
+func hitUrl(url string, c chan<- requestResult) {
+	fmt.Println("Checking Url : ", url)
+	res, err := http.Get(url)
+	status := "OK"
+	if err != nil || res.StatusCode >= 400 {
+		status = "FAILED"
+	}
+	c <- requestResult{url: url, status: status}
 }
