@@ -2,43 +2,46 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
-type requestResult struct {
-	url    string
-	status string
-}
+var baseUrl = "https://kr.indeed.com/jobs?q=python&limit=50"
 
 func main() {
-	results := map[string]string{}
-	c := make(chan requestResult)
-	urls := []string{
-		"https://www.airbnb.com",
-		"https://www.google.co.kr",
-		"https://www.naver.com",
-	}
+	totalPages := getPages()
+	fmt.Println(totalPages)
+}
 
-	for _, url := range urls {
-		go hitUrl(url, c)
-	}
+func getPages() int {
+	pages := 0
+	res, err := http.Get(baseUrl)
 
-	for i := 0; i < len(urls); i++ {
-		result := <-c
-		results[result.url] = result.status
-	}
+	checkErr(err)
+	checkCode(res)
 
-	for url, status := range results {
-		fmt.Println(url, status)
+	defer res.Body.Close()
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+
+	checkErr(err)
+
+	doc.Find(".pagination").Each(func(i int, s *goquery.Selection) {
+		pages = s.Find("a").Length()
+	})
+
+	return pages
+}
+
+func checkErr(err error) {
+	if err != nil {
+		log.Fatalln(err)
 	}
 }
 
-func hitUrl(url string, c chan<- requestResult) {
-	fmt.Println("Checking Url : ", url)
-	res, err := http.Get(url)
-	status := "OK"
-	if err != nil || res.StatusCode >= 400 {
-		status = "FAILED"
+func checkCode(res *http.Response) {
+	if res.StatusCode != 200 {
+		log.Fatalln("Request Failed with Status : ", res.StatusCode)
 	}
-	c <- requestResult{url: url, status: status}
 }
