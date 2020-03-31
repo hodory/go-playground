@@ -58,7 +58,7 @@ func writeJobs(jobs []extractedJob) {
 	}
 }
 
-func getPage(page int, channel chan []extractedJob) {
+func getPage(page int, httpC chan<- []extractedJob) {
 	var jobs []extractedJob
 	c := make(chan extractedJob)
 	pageUrl := baseUrl + "&start=" + strconv.Itoa(page*50)
@@ -86,7 +86,7 @@ func getPage(page int, channel chan []extractedJob) {
 		jobs = append(jobs, job)
 	}
 
-	channel <- jobs
+	httpC <- jobs
 }
 
 func extractJob(card *goquery.Selection, c chan<- extractedJob) {
