@@ -41,8 +41,6 @@ func Scrape(term string) {
 
 func writeJobs(jobs []extractedJob) {
 	file, err := os.Create("jobs.csv")
-	var jobSlices []string
-	c := make(chan []string)
 	checkErr(err)
 
 	w := csv.NewWriter(file)
@@ -54,18 +52,10 @@ func writeJobs(jobs []extractedJob) {
 	checkErr(wErr)
 
 	for _, job := range jobs {
-		go jobSlice(job, c)
+		jobSlice := []string{"https://kr.indeed.com/viewjob?jk=" + job.id, job.title, job.location, job.salary, job.summary}
+		jwErr := w.Write(jobSlice)
+		checkErr(jwErr)
 	}
-
-	for i := 0; i < len(jobs); i++ {
-		jobSlices = append(jobSlices, <-c...)
-	}
-
-	w.Write(jobSlices)
-}
-
-func jobSlice(job extractedJob, c chan<- []string) {
-	c <- []string{"https://kr.indeed.com/viewjob?jk=" + job.id, job.title, job.location, job.salary, job.summary}
 }
 
 func getPage(page int, baseUrl string, httpC chan<- []extractedJob) {
@@ -101,10 +91,10 @@ func getPage(page int, baseUrl string, httpC chan<- []extractedJob) {
 
 func extractJob(card *goquery.Selection, c chan<- extractedJob) {
 	id, _ := card.Attr("data-jk")
-	title := cleanString(card.Find(".title>a").Text())
-	location := cleanString(card.Find(".sjcl").Text())
-	salary := cleanString(card.Find(".salaryText").Text())
-	summary := cleanString(card.Find(".summary").Text())
+	title := CleanString(card.Find(".title>a").Text())
+	location := CleanString(card.Find(".sjcl").Text())
+	salary := CleanString(card.Find(".salaryText").Text())
+	summary := CleanString(card.Find(".summary").Text())
 
 	c <- extractedJob{
 		id:       id,
@@ -146,6 +136,6 @@ func checkCode(res *http.Response) {
 	}
 }
 
-func cleanString(str string) string {
+func CleanString(str string) string {
 	return strings.Join(strings.Fields(strings.TrimSpace(str)), " ")
 }
